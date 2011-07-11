@@ -108,7 +108,7 @@ You will get some output about creating implicit indices, but otherwise the scri
 #. TG source DB
 #. TG source DB accession
 
-The last command also gives you some interesting statistics of the loaded data right away. For my run on the TRED data, the statistics were::
+The last command also gives you some interesting statistics of the loaded data right away. For my run on the TRED data, the statistics were:
 
 * Curated Factor-Gene-PubMed Triples: ``6765``
 * Curated Publications: ``3494``
