@@ -1,8 +1,8 @@
-########
-TREDload
-########
+#######################################
+Load [parts of] a TRED DB into Postgres
+#######################################
 
-Two scripts to load parts of the TRED DB in a Posgres instance.
+Two scripts to load parts of the raw TRED DB release files into a Posgres DB.
 
 Tested and working on OSX 10.6.7 and using Postgres 9.0.4 (64bit build).
 
@@ -36,7 +36,7 @@ THE SOFTWARE.
 Components
 ----------
 
-A bash script to extract the data (extract.sh) and a SQL script to load the data, creating the tables, and doing some interesting queries (tred.sql).
+A bash script to extract the data (``extract.sh``) and a SQL script to load the data, creating the tables, and doing some interesting queries (``tred.sql``).
 
 Limitations
 -----------
@@ -46,7 +46,7 @@ The current extraction focuses on extracting only those TRED interactions from t
 Environment setup
 -----------------
 
-The idea is to have a directory with the scripts, that has a subdirectory with the raw DB files received from TRED. The only bad idea is to name the subdirectory 'tmp', which will be created by the extraction script. Otherwise, any [meaningful...] subdirectory name is suitable; the date was chosen to keep track of multiple downloads of the TRED DB, because the raw data we received from TRED itself did not seem to be identified with a version number::
+The idea is to have a directory with the scripts, that has a subdirectory with the raw DB files received from TRED. The only bad idea is to name the subdirectory ``tmp``, which will be created by the extraction script. Otherwise, any (meaningful...) subdirectory name is suitable; the date was chosen to keep track of multiple downloads of the TRED DB, because the raw data we received from TRED itself did not seem to be identified with a version number::
 
   mkdir tred
   cd tred
@@ -58,7 +58,7 @@ The idea is to have a directory with the scripts, that has a subdirectory with t
 Preparations
 ------------
 
-In the SQL script (tred.sql), set the correct path to this main tred directory just created::
+In the SQL script (``tred.sql``), set the correct path to this main tred directory just created::
 
   vi tred.sql
   :4
@@ -74,8 +74,9 @@ In the SQL script (tred.sql), set the correct path to this main tred directory j
   <ESC>
   :wq
 
-The result should be that line 4 in the file looks something like this:
-\set treddir '\'/home/username/work/data/tred'
+The result should be that line 4 in the file looks something like this::
+
+  \set treddir '\'/home/username/work/data/tred'
 
 Step-by0step instructions
 -------------------------
@@ -101,17 +102,17 @@ Run the SQL script::
 
 You will get some output about creating implicit indices, but otherwise the script should exit cleanly (status 0). The last argument ("tred") should be the DB you chose earlier. The last command of the script will copy a new table to your '/tmp' (notice: global /tmp, not the tmp dir described before!) directory, in a file 'FactorGeneEvidence.txt', that contains what I had "hoped" to have found in TRED initially: All unique TG-TF-PMID triples, with the following columns:
 
- #. PMID
- #. TF source DB
- #. TF source DB accession
- #. TG source DB
- #. TG source DB accession
+#. PMID
+#. TF source DB
+#. TF source DB accession
+#. TG source DB
+#. TG source DB accession
 
 The last command also gives you some interesting statistics of the loaded data right away. For my run on the TRED data, the statistics were::
 
- * Curated Factor-Gene-PubMed Triples: 6765
- * Curated Publications: 3494
+* Curated Factor-Gene-PubMed Triples: ``6765``
+* Curated Publications: ``3494``
 
-Note that the Factor-Gene-PubMed Triples are for **unique** factor-to-gene relations, while the file produced in /tmp holds far more than those, because for each such unique triplet multiple *accessions* might exist on each side (ie., for the TF and TG). Also note that both numbers and the extracted file are not over all triples/publications in the TRED DB, but only for those that meet certain selection criteria: the TF-promoter relation curation quality must be 'known' (fp_quality = 1) and the promoter quality itself must be 'known' or 'known, curated' (p_quality = 2 OR p_quality = 1).
+Note that the Factor-Gene-PubMed Triples are for **unique** factor-to-gene relations, while the file produced in /tmp holds far more than those, because for each such unique triplet multiple *accessions* might exist on each side (ie., for the TF and TG). Also note that both numbers and the extracted file are not over all triples/publications in the TRED DB, but only for those that meet certain selection criteria: the TF-promoter relation curation quality must be 'known' (``fp_quality = 1``) and the promoter quality itself must be 'known' or 'known, curated' (``p_quality < 3``).
 
 That's it, folks - **good luck**!
