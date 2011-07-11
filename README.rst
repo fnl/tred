@@ -78,7 +78,7 @@ The result should be that line 4 in the file looks something like this::
 
   \set treddir '\'/home/username/work/data/tred'
 
-Step-by0step instructions
+Step-by-step instructions
 -------------------------
 
 **1. Create a DB in Postgres**
