@@ -126,8 +126,8 @@ SELECT DISTINCT fpp.pmid
 COPY (
 SELECT DISTINCT
   fpp.pmid,
-  fs.name AS f_src, fa.accession AS factor,
-  gs.name AS g_src, ga.accession AS gene
+  fpr.f_id, fs.name AS f_src, fa.accession AS factor,
+  p.p_id, gs.name AS g_src, ga.accession AS gene
   FROM factor_accession AS fa
   JOIN source AS fs
     ON fa.src_id = fs.src_id
